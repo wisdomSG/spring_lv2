@@ -1,8 +1,10 @@
 package com.sparta.springlv2.controller;
 
+import com.sparta.springlv2.dto.LoginRequestDto;
 import com.sparta.springlv2.dto.SignupRequestDto;
 import com.sparta.springlv2.dto.StatusResponseDto;
 import com.sparta.springlv2.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,4 +26,16 @@ public class UserController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    @GetMapping("/user/login")
+    public ResponseEntity<StatusResponseDto> login(@RequestBody LoginRequestDto requestDto, HttpServletResponse res) {
+        try {
+            userService.login(requestDto, res);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        String msg = "로그인 성공";
+        StatusResponseDto responseDto = new StatusResponseDto(msg, HttpStatus.OK.value());
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 }
