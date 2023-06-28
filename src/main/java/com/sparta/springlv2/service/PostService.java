@@ -65,6 +65,22 @@ public class PostService {
 
     }
 
+    public void deletePost(Long id, PostRequestDto requestDto, String data) {
+        // 해당 게시물이 DB에 존재하는지 확인
+        Post post = findPost(id);
+
+        User user = userService.getUsername(data);
+
+        if(!post.getUser().getUsername().equals(user.getUsername())) {
+            throw new IllegalArgumentException("해당 사용자는 게시물을 삭제할 권한이 없습니다.");
+        }
+
+        // 포스트 삭제
+        postRepository.delete(post);
+    }
+
+
+
     private Post findPost(Long id) {
         return postRepository.findById(id).orElseThrow(()->
                 new IllegalArgumentException("선택한 게시물은 존재하지 않습니다.")

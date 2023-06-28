@@ -124,6 +124,15 @@ public class JwtUtil {
         }
         return null;
     }
+
+    public String inspectToken(String data){
+        data = substringToken(data);
+        System.out.println(data);
+        if(!validateToken(data)) {
+            throw new RuntimeException("Invalid token");
+        }
+        return data;
+    }
 }
 
 
