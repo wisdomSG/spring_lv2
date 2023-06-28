@@ -33,21 +33,27 @@ public class PostController {
     }
 
     // 전체 게시물 조회
-//    @GetMapping("/posts")
-//    public List<PostResponseDto> getPosts() {
-//        return postService.getPosts();
-//    }
-//
-//    // 선택한 게시물 조회
-//    @GetMapping("/post/{id}")
-//    public PostResponseDto getPost(@PathVariable Long id) {
-//        return postService.getPost(id);
-//    }
+    @GetMapping("/posts")
+    public List<PostResponseDto> getPosts() {
+        return postService.getPosts();
+    }
+
+   // 선택한 게시물 조회
+    @GetMapping("/post/{id}")
+    public PostResponseDto getPost(@PathVariable Long id) {
+        return postService.getPost(id);
+    }
 
     // 게시물 수정
-//    @PutMapping("/post/{id}")
-//    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto){
-//        return postService.updatePost(id, requestDto);
-//    }
+    @PutMapping("/post/{id}")
+    public PostResponseDto updatePost(@PathVariable Long id, @CookieValue(JwtUtil.AUTHORIZATION_HEADER) String data, @RequestBody PostRequestDto requestDto){
+        data = jwtUtil.substringToken(data);
+        System.out.println(data);
+        if(!jwtUtil.validateToken(data)) {
+            throw new RuntimeException("Invalid token");
+        }
+
+        return postService.updatePost(id, requestDto, data);
+    }
 
 }
