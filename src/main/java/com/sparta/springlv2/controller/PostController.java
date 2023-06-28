@@ -22,10 +22,10 @@ public class PostController {
     }
 
     // 전체 게시물 조회
-    @GetMapping("/posts")
-    public List<PostResponseDto> getPosts() {
-        return postService.getPosts();
-    }
+//    @GetMapping("/posts")
+//    public List<PostResponseDto> getPosts() {
+//        return postService.getPosts();
+//    }
 
     // 선택한 게시물 조회
     @GetMapping("/post/{id}")

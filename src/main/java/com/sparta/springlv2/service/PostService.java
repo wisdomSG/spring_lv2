@@ -24,12 +24,12 @@ public class PostService {
         return new PostResponseDto(savePost);
     }
 
-    public List<PostResponseDto> getPosts() {
-        return postRepository.findByAllOrderCOrderByCreatedAtDesc()
-                .stream()
-                .map(PostResponseDto::new)
-                .toList();
-    }
+//    public List<PostResponseDto> getPosts() {
+//        return postRepository.findByAllOrderCOrderByCreatedAtDesc()
+//                .stream()
+//                .map(PostResponseDto::new)
+//                .toList();
+//    }
 
 
     public PostResponseDto getPost(Long id) {
