@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -32,4 +35,14 @@ public class User {
         this.username = username;
         this.password = password;
     }
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> postList = new ArrayList<>();
+
+
+    public void addPostList(Post post) {
+        this.postList.add(post);
+        post.setUser(this);
+    }
+
 }

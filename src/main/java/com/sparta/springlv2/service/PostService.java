@@ -3,6 +3,8 @@ package com.sparta.springlv2.service;
 import com.sparta.springlv2.dto.PostRequestDto;
 import com.sparta.springlv2.dto.PostResponseDto;
 import com.sparta.springlv2.entity.Post;
+import com.sparta.springlv2.entity.User;
+import com.sparta.springlv2.jwt.JwtUtil;
 import com.sparta.springlv2.repository.PostRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,21 +17,25 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public PostResponseDto createPost(PostRequestDto requestDto) {
+    private final UserService userService;
+    public PostResponseDto createPost(PostRequestDto requestDto,String data) {
+        User user = userService.getUsername(data);
 
-        Post post = new Post(requestDto);
+        Post post = new Post(requestDto, user);
+
 
         Post savePost = postRepository.save(post);
+
 
         return new PostResponseDto(savePost);
     }
 
-//    public List<PostResponseDto> getPosts() {
-//        return postRepository.findByAllOrderCOrderByCreatedAtDesc()
-//                .stream()
-//                .map(PostResponseDto::new)
-//                .toList();
-//    }
+    public List<PostResponseDto> getPosts() {
+        return postRepository.findAllByOrderByCreatedAtDesc()
+                .stream()
+                .map(PostResponseDto::new)
+                .toList();
+    }
 
 
     public PostResponseDto getPost(Long id) {

@@ -17,25 +17,21 @@ public class Post extends Timestamped{
     private Long id;
     @Column(name = "title", nullable = false)
     private String  title;
-    @Column(name = "username", nullable = false)
-    private String username;
-    @Column(name = "password", nullable = false)
-    private String password;
     @Column(name = "contents", nullable = false, length = 500)
     private String contents;
 
-    public Post(PostRequestDto requestDto) {
+    public Post(PostRequestDto requestDto, User user) {
         this.title = requestDto.getTitle();
-        this.username = requestDto.getUsername();
         this.contents = requestDto.getContents();
-        this.password = requestDto.getPassword();
+        this.user = user;
+
     }
     public void update(PostRequestDto requestDto) {
         this.title = requestDto.getTitle();
-        this.username = requestDto.getUsername();
         this.contents = requestDto.getContents();
-        this.password = requestDto.getPassword();
     }
 
-
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

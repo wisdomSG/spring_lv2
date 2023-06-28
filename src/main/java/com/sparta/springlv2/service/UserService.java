@@ -56,6 +56,12 @@ public class UserService {
         jwtUtil.addJwtToCookie(token, res);
     }
 
+    public User getUsername(String token) {
+        User user = userRepository.findByUsername(jwtUtil.getUsernameFromToken(token)).orElseThrow(
+                () -> new NullPointerException("사용자가 존재하지 않습니다.")
+        );
+        return user;
+    }
 
 
 }
