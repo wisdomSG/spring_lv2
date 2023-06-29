@@ -2,6 +2,7 @@ package com.sparta.springlv2.entity;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,9 +21,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Pattern(regexp = "^[a-z0-9]{4,10}$")
     @Column(nullable = false, unique = true)
     private String username;
 
+    @Pattern(regexp = "^[a-zA-Z0-9]{8,15}$")
     @Column(nullable = false)
     private String password;
 
