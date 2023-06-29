@@ -3,6 +3,7 @@ package com.sparta.springlv2.service;
 import com.sparta.springlv2.dto.LoginRequestDto;
 import com.sparta.springlv2.dto.SignupRequestDto;
 import com.sparta.springlv2.entity.User;
+import com.sparta.springlv2.entity.UserRoleEnum;
 import com.sparta.springlv2.jwt.JwtUtil;
 import com.sparta.springlv2.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,6 +22,10 @@ public class UserService {
 
     private final JwtUtil jwtUtil;
 
+    // ADMIN_TOKEN: 일반사용자인지 관리자인지 구분하기위해서
+    private final String ADMIN_TOKEN = "4444";
+
+
 
     public void signup(SignupRequestDto requestDto) {
         String username = requestDto.getUsername();
@@ -32,8 +37,22 @@ public class UserService {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
 
+        // 사용자 ROLE 확인
+        UserRoleEnum role = UserRoleEnum.USER;
+
+        if(!requestDto.getAdminToken().isEmpty()) {
+            requestDto.setAdmin(true);
+        }
+
+        if (requestDto.isAdmin()) {
+            if (!ADMIN_TOKEN.equals(requestDto.getAdminToken())) {
+                throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
+            }
+            role = UserRoleEnum.ADMIN;
+        }
+
         // 사용자 등록
-        User user = new User(username, password);
+        User user = new User(username, password, role);
         userRepository.save(user);
     }
 
@@ -51,8 +70,11 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
+
+
+
         // JWT 생성 및 쿠키에 저장 후 Response 객체에 추가
-        String token = jwtUtil.createToken(user.getUsername());
+        String token = jwtUtil.createToken(user.getUsername(), user.getRole());
         jwtUtil.addJwtToCookie(token, res);
     }
 
