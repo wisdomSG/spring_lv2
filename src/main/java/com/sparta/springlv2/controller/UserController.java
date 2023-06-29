@@ -31,16 +31,16 @@ public class UserController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @GetMapping("/user/login")
-    public ResponseEntity<StatusResponseDto> login(@RequestBody LoginRequestDto requestDto, HttpServletResponse res) {
-        try {
-            userService.login(requestDto, res);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        String msg = "로그인 성공";
-        StatusResponseDto responseDto = new StatusResponseDto(msg, HttpStatus.OK.value());
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
-    }
+//    @GetMapping("/user/login")
+//    public ResponseEntity<StatusResponseDto> login(@RequestBody LoginRequestDto requestDto, HttpServletResponse res) {
+//        try {
+//            userService.login(requestDto, res);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        String msg = "로그인 성공";
+//        StatusResponseDto responseDto = new StatusResponseDto(msg, HttpStatus.OK.value());
+//        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+//    }
 }
