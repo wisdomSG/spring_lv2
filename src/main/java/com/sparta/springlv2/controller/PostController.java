@@ -32,15 +32,15 @@ public class PostController {
     }
 
     // 전체 게시물 조회
-    @GetMapping("/posts")
-    public List<PostResponseDto> getPosts() {
-        return postService.getPosts();
+    @GetMapping("/post/inquiry")
+    public List<PostResponseDto> getPosts(@CookieValue(JwtUtil.AUTHORIZATION_HEADER) String data) {
+        return postService.getPosts(data);
     }
 
    // 선택한 게시물 조회
-    @GetMapping("/post/{id}")
-    public PostResponseDto getPost(@PathVariable Long id) {
-        return postService.getPost(id);
+    @GetMapping("/post/inquiry/{id}")
+    public PostResponseDto getPost(@PathVariable Long id, @CookieValue(JwtUtil.AUTHORIZATION_HEADER) String data) {
+        return postService.getPost(id, data);
     }
 
     // 게시물 수정

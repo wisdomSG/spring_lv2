@@ -2,9 +2,11 @@ package com.sparta.springlv2.service;
 
 import com.sparta.springlv2.dto.PostRequestDto;
 import com.sparta.springlv2.dto.PostResponseDto;
+import com.sparta.springlv2.entity.Comment;
 import com.sparta.springlv2.entity.Post;
 import com.sparta.springlv2.entity.User;
 import com.sparta.springlv2.jwt.JwtUtil;
+import com.sparta.springlv2.repository.CommentRepository;
 import com.sparta.springlv2.repository.PostRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +34,10 @@ public class PostService {
         return new PostResponseDto(savePost);
     }
 
-    public List<PostResponseDto> getPosts() {
+    public List<PostResponseDto> getPosts(String data) {
+
+        User user = userService.getUsername(data);
+
         return postRepository.findAllByOrderByCreatedAtDesc()
                 .stream()
                 .map(PostResponseDto::new)
@@ -40,7 +45,9 @@ public class PostService {
     }
 
 
-    public PostResponseDto getPost(Long id) {
+    public PostResponseDto getPost(Long id, String data) {
+        User user = userService.getUsername(data);
+
         Post post = findPost(id);
 
         return new PostResponseDto(post);
@@ -70,6 +77,7 @@ public class PostService {
         Post post = findPost(id);
 
         User user = userService.getUsername(data);
+
 
         if(!post.getUser().getUsername().equals(user.getUsername())) {
             throw new IllegalArgumentException("해당 사용자는 게시물을 삭제할 권한이 없습니다.");
